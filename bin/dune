@@ -1,0 +1,11 @@
+(executable
+ (public_name advent_fpga)
+ (name solve)
+ (modules solve)
+ (libraries core hardcaml hardcaml_waveterm hardcaml_demo_project))
+
+(executable
+ (public_name solve_p2)
+ (name solve_p2)
+ (libraries hardcaml hardcaml_waveterm hardcaml_demo_project core)
+ (preprocess (pps ppx_jane ppx_hardcaml)))
