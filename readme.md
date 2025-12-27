@@ -2,7 +2,7 @@
 
 **Challenge:** Cafeteria (Inventory Management)  
 **Language:** OCaml / [Hardcaml](https://github.com/janestreet/hardcaml)  
-**Architecture:** Linear Systolic Array
+
 
 ## Project Overview
 This project provides a synthesizable hardware solution for Jane Street's Advent of Code Day 5 puzzle. The core problem involves mapping and merging integer ranges to determine "fresh" ingredients. While this is straightforward in software using standard sorting algorithms, an efficient hardware implementation requires a different approach to handle data dependencies without stalling.
