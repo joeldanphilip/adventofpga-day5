@@ -7,7 +7,6 @@ module HW = Hardcaml_demo_project.Day05_p2
 let input_file = "input.txt"
 let max_sim_cycles = 5000
 
-(* Parse "Start-End" ranges from the input file, ignoring invalid lines *)
 let parse_input filename =
   In_channel.read_lines filename
   |> List.filter_map ~f:(fun line ->
@@ -27,6 +26,10 @@ let () =
   
   let module Sim = Cyclesim.With_interface(HW.I)(HW.O) in
   let sim = Sim.create create_fn in
+
+  let vcd_out = Out_channel.create "day05_accelerator.vcd" in
+  let sim = Hardcaml.Vcd.wrap vcd_out sim in
+
   let inputs = Cyclesim.inputs sim in
   let outputs = Cyclesim.outputs sim in
   let step () = Cyclesim.cycle sim in
@@ -67,14 +70,14 @@ let () =
 
   (* 5. Results *)
   let raw_result = Bits.to_int !(outputs.result) in
-  
-  (* Correction: The pipeline initializes unused registers to 0-0 (length 1).
-     We subtract 1 to remove this initialization artifact. *)
   let final_answer = raw_result - 1 in
 
   Printf.eprintf "Simulation finished in %d cycles.\n" !cycles;
   Printf.eprintf "Raw Output:   %d\n" raw_result;
   Printf.eprintf "Final Answer: %d\n" final_answer;
+
+  Out_channel.close vcd_out;
+  Printf.eprintf "Waveform saved to day05_accelerator.vcd\n";
 
   (* Generate Synthesizable Verilog to stdout *)
   let circuit = C.create_exn ~name:"sorter_and_merger" create_fn in
